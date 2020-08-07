@@ -12,7 +12,7 @@ def test_modify_contact(app):
                       email3="tuser@mail.rucom", homepage="tuser.ru", address2="Russia", phone2="8920", notes="modify")
     contact.id = old_contacts[0].id
     app.contact.modify_first_contact(contact)
+    assert len(old_contacts) == app.contact.count()
     new_contacts = app.contact.get_contact_list()
-    assert len(old_contacts) == len(new_contacts)
     old_contacts[0] = contact
     assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
