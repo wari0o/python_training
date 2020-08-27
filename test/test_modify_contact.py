@@ -8,11 +8,7 @@ def test_modify_contact(app, db, check_ui):
         app.contact.add(Contact(firstname="test", middlename="test", nickname="test"))
     old_contacts = db.get_contact_list()
     contact = random.choice(old_contacts)
-    contact_edit = Contact(firstname="modifyfirst", middlename="editmiddle", nickname="editnick", lastname="editlast",
-                      title="contact", company="test", address="Moscow", homephone="123", mobilephone="8915",
-                      workphone="8916", fax="8917", email1="tuser@mail.ru", email2="tuser@mail.com",
-                      email3="tuser@mail.rucom", homepage="tuser.ru", address2="Russia", secondaryphone="8920",
-                      notes="modify")
+    contact_edit = Contact(firstname="modifyfirst", lastname="editlast")
     app.contact.modify_by_id(contact.id, contact_edit)
     assert len(old_contacts) == app.contact.count()
     new_contacts = db.get_contact_list()
