@@ -1,5 +1,12 @@
 import re
 from random import randrange
+from model.contact import Contact
+
+
+def test_verification_contact_db(app, db):
+    contact_from_ui = app.contact.get_contact_list()
+    contact_from_db = map(clean, db.get_contact_list())
+    assert sorted(contact_from_db, key=Contact.id_or_max) == sorted(contact_from_ui, key=Contact.id_or_max)
 
 
 def test_verification_contact(app):
@@ -44,3 +51,10 @@ def merge_email_like_on_home_page(contact):
     return "\n".join(filter(lambda x: x != "",
                             filter(lambda x: x is not None,
                                    [contact.email1, contact.email2, contact.email3])))
+
+
+def clean(contact):
+    return Contact(id=contact.id, firstname=contact.firstname.strip(), lastname=contact.lastname.strip(),
+                   address=contact.address.strip(),
+                   all_phones_from_home_page=merge_phones_like_on_home_page(contact),
+                   all_email_from_home_page=merge_email_like_on_home_page(contact))
